@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const RecipeController = require("../controller/RecipeController");
 
 const schema = mongoose.Schema;
 
