@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
   return res.json({ message: "Hello World" });
 });
 
+app.use(express.json());
 console.log(process.env.PORT);
 
 app.use("/api/recipes", recipeRouters);
