@@ -40,11 +40,45 @@ const RecipeController = {
       return res.status(404).json({ message: "Recipe Not found" });
     }
   },
-  destory: (req, res) => {
-    return res.json({ message: "delete recipes" });
+  destory: async (req, res) => {
+    try {
+      let id = req.params.id;
+
+      // check if recipe type is correct
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Not a valid id" });
+      }
+
+      let recipe = await Recipe.findByIdAndDelete(id);
+
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe Not found" });
+      }
+      return res.json(recipe);
+    } catch (error) {
+      return res.status(404).json({ message: "Recipe Not found" });
+    }
   },
-  update: (req, res) => {
-    return res.json({ message: "update recipes" });
+  update: async (req, res) => {
+    try {
+      let id = req.params.id;
+
+      // check if recipe type is correct
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Not a valid id" });
+      }
+
+      let recipe = await Recipe.findByIdAndUpdate(id, { ...req.body });
+
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe Not found" });
+      }
+      return res.json(recipe);
+    } catch (error) {
+      return res.status(404).json({ message: "Recipe Not found" });
+    }
   },
 };
 
