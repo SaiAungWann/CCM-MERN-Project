@@ -4,6 +4,7 @@ require("dotenv").config();
 const morgan = require("morgan");
 const recipeRouters = require("./routes/Recipes");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const mongoURL =
   "mongodb+srv://aungwann:test1234@ccm-mern-cluster.4g4bx8h.mongodb.net/?retryWrites=true&w=majority&appName=CCM-MERN-Cluster";
@@ -22,6 +23,10 @@ mongoose
   });
 
 const app = express();
+
+// Use Cors only when developing only
+// ---------- WARNING: DO NOT USE IN PRODUCTION -----------
+app.use(cors()); // Cross-Origin Resource Sharing (CORS)
 
 app.use(morgan("dev"));
 

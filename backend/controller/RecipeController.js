@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const RecipeController = {
   index: async (req, res) => {
     let recipe = await Recipe.find().sort({ createdAt: -1 });
-    return res.json({ message: "Get all recipes" });
+    return res.json(recipe);
   },
   store: async (req, res) => {
     try {
