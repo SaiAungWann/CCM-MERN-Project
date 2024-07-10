@@ -8,9 +8,10 @@ router.get("", RecipeController.index);
 router.post(
   "",
   [
-    body("title").notEmpty,
-    body("description").notEmpty,
-    body("ingredients").isArray({ min: 3 }).notEmpty,
+    body("title").notEmpty(),
+    body("description").notEmpty(),
+    body("ingredients").notEmpty(),
+    body("ingredients").isArray({ min: 1 }),
   ],
   handleErrorMessage,
   RecipeController.store

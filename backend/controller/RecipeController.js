@@ -3,23 +3,47 @@ const mongoose = require("mongoose");
 
 const RecipeController = {
   index: async (req, res) => {
-    let recipe = await Recipe.find().sort({ createdAt: -1 });
-    return res.json(recipe);
+    let limit = 6;
+    let page = req.query.page || 1;
+    let recipes = await Recipe.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    let totalRecipeCount = await Recipe.countDocuments();
+
+    let totalPagesCount = Math.ceil(totalRecipeCount / limit);
+
+    let links = {
+      nextPage: totalPagesCount == page ? false : true,
+      previousPage: page == 1 ? false : true,
+      currentPage: page,
+      loopableLinks: [],
+    };
+
+    //generate loopableLink array
+    for (let index = 0; index < totalPagesCount; index++) {
+      let number = index + 1;
+      links.loopableLinks.push({ number });
+    }
+
+    let response = {
+      links,
+      data: recipes,
+    };
+    return res.json(response);
   },
   store: async (req, res) => {
-    try {
-      const { title, description, ingredients } = req.body;
+    const { title, description, ingredients } = req.body;
 
-      const recipe = await Recipe.create({
-        title,
-        description,
-        ingredients,
-      });
-      return res.json(recipe);
-    } catch (error) {
-      return res.status(400).json({ message: "Something went wrong" });
-    }
+    const recipe = await Recipe.create({
+      title,
+      description,
+      ingredients,
+    });
+    return res.json(recipe);
   },
+
   show: async (req, res) => {
     try {
       let id = req.params.id;
