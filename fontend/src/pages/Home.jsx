@@ -4,7 +4,7 @@ import RecipesCard from "../component/RecipesCard";
 import { useEffect } from "react";
 import { useState } from "react";
 import Pagination from "../component/Pagination";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -12,6 +12,7 @@ function Home() {
   let location = useLocation();
   let searchQuary = new URLSearchParams(location.search);
   let page = searchQuary.get("page");
+  let nagivate = useNavigate();
 
   const [links, setLinks] = useState(null);
 
@@ -35,11 +36,19 @@ function Home() {
 
     fetchRecipes();
   }, [page]);
+
+  const onDelete = (_id) => {
+    if (recipes.length === 1 && page > 1) {
+      nagivate("/?page=" + (page - 1));
+    } else {
+      setRecipes((prev) => prev.filter((recipe) => recipe._id !== _id));
+    }
+  };
   return (
     <div className="p-5">
       {!!recipes.length &&
         recipes.map((recipe) => (
-          <RecipesCard recipe={recipe} key={recipe._id} />
+          <RecipesCard recipe={recipe} key={recipe._id} onDelete={onDelete} />
         ))}
 
       {!!links && <Pagination links={links} page={page || 1} />}
