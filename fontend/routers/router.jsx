@@ -26,6 +26,10 @@ const router = createBrowserRouter([
         path: "/recipes/create",
         element: <RecipeForm />,
       },
+      {
+        path: "/recipes/edit/:id",
+        element: <RecipeForm />,
+      },
     ],
   },
 ]);

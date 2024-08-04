@@ -2,8 +2,10 @@ import React from "react";
 import plus from "../assets/plus.svg";
 import { useState } from "react";
 import Ingredient from "../component/Ingredient";
-import axiao from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function RecipeForm() {
   const [title, setTitle] = useState("");
@@ -13,12 +15,30 @@ export default function RecipeForm() {
   const navigate = useNavigate();
   const [error, setError] = useState([]);
 
+  let id = useParams().id;
+  useEffect(() => {
+    let fetchRecipe = async () => {
+      console.log(id);
+      if (id) {
+        let res = await axios.get("http://localhost:4000/api/recipes/" + id);
+        if (res.status === 200) {
+          console.log(res.data);
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+          setIngredients(res.data.ingredients);
+        }
+      }
+    };
+
+    fetchRecipe();
+  }, [id]);
+
   let addNweIngredient = () => {
     setIngredients((prev) => [newIngredient, ...prev]);
     setNewIngredient("");
   };
 
-  let createRecipe = async (e) => {
+  let submit = async (e) => {
     try {
       e.preventDefault();
       let recipe = {
@@ -28,21 +48,31 @@ export default function RecipeForm() {
       };
       console.log(recipe);
 
-      let res = await axiao.post("http://localhost:4000/api/recipes", recipe);
+      let res;
+      if (id) {
+        res = await axios.patch(
+          "http://localhost:4000/api/recipes/" + id,
+          recipe
+        );
+      } else {
+        res = await axios.post("http://localhost:4000/api/recipes", recipe);
+      }
       if (res.status === 200) {
         navigate("/");
       }
       console.log(res);
     } catch (e) {
-      setError(Object.keys(e.response.data.error));
+      // setError(Object.keys(e.response.data.error));
       // console.log(Object.keys(e.response.data.error));
     }
   };
 
   return (
     <div className="p-5 border-4 border-white rounded-2xl mt-5 space-y-6">
-      <h1 className="text-3xl font-bold text-orange-400">Recipe Create Form</h1>
-      <form action="" className="space-y-3" onSubmit={createRecipe}>
+      <h1 className="text-3xl font-bold text-orange-400 text-center">
+        Recipe {id ? "Edit" : "Create"} Form
+      </h1>
+      <form action="" className="space-y-3" onSubmit={submit}>
         <input
           type="text"
           placeholder="Please enter recipe title"
@@ -104,7 +134,7 @@ export default function RecipeForm() {
           type="submit"
           className="w-full px-3 py-1 rounded-full bg-orange-400 text-white"
         >
-          Create Recipe
+          {id ? "Edit" : "Create"} Recipe
         </button>
       </form>
     </div>
