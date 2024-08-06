@@ -1,3 +1,9 @@
+const User = require("../model/User");
+
+const cookie = require("cookieParser");
+
+const createToken = require("./helper/createToken");
+
 const UserController = {
   login: (req, res) => {
     return res.json({ message: "login is hit" });
@@ -6,16 +12,16 @@ const UserController = {
     try {
       let { name, email, password } = req.body;
 
-      let UserExist = await User.findOne({ email });
-      if (UserExist) {
-        throw new error("User already exist");
-      }
+      let user = await User.register(name, email, password);
 
-      let salt = await bcrypt.genSalt(10);
-      let hashValue = await bcrypt.hash(password, salt);
+      let token = createToken(user._id);
 
-      let user = await User.create({ name, email, password: hashValue });
-      return res.json(user);
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+      });
+
+      return res.json({ user, token });
     } catch (error) {
       return res.status(400).json({ message: error.message });
     }

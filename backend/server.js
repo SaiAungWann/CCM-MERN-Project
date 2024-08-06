@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const recipeRouters = require("./routes/Recipes");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const userRouters = require("./routes/Users");
 
 const mongoURL =
   "mongodb+srv://aungwann:test1234@ccm-mern-cluster.4g4bx8h.mongodb.net/?retryWrites=true&w=majority&appName=CCM-MERN-Cluster";
@@ -38,3 +39,5 @@ app.use(express.json());
 console.log(process.env.PORT);
 
 app.use("/api/recipes", recipeRouters);
+
+app.use("/api/users", userRouters);

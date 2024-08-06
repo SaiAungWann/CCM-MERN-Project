@@ -4,6 +4,8 @@ import Home from "../src/pages/Home";
 import About from "../src/pages/About";
 import Contact from "../src/pages/Contact";
 import RecipeForm from "../src/pages/RecipeForm";
+import SignInForm from "../src/pages/SignInForm";
+import SignUpForm from "../src/pages/SignUpForm";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/recipes/edit/:id",
         element: <RecipeForm />,
+      },
+            {
+        path: "/sign-in", //http://localhost:5173/sign-in
+        element: <SignInForm />
+      },
+      {
+        path: "/sign-up", //http://localhost:5173/sign-up
+        element: <SignUpForm />
       },
     ],
   },

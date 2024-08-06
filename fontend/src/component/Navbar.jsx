@@ -33,6 +33,16 @@ export default function Navbar() {
               Create
             </Link>
           </li>
+          <li>
+            <Link to="/sign-in" className="hover:text-orange-600">
+              LogIn
+            </Link>
+          </li>
+          <li>
+            <Link to="/sign-up" className="hover:text-orange-600">
+              SignUp
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
