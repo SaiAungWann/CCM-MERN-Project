@@ -27,7 +27,12 @@ const app = express();
 
 // Use Cors only when developing only
 // ---------- WARNING: DO NOT USE IN PRODUCTION -----------
-app.use(cors()); // Cross-Origin Resource Sharing (CORS)
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+); // Cross-Origin Resource Sharing (CORS)
 
 app.use(morgan("dev"));
 

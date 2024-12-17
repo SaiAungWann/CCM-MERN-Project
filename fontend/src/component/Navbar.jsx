@@ -1,9 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 export default function Navbar() {
+
+  let { userName, email } = useContext(AuthContext);
+  console.log(userName , email);
+
   return (
+
     <nav className="flex justify-between items-center p-5 bg-white">
       <div>
         <h1 className="text-4xl font-bold text-orange-600 underline">

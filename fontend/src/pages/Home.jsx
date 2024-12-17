@@ -12,6 +12,7 @@ function Home() {
   let location = useLocation();
   let searchQuary = new URLSearchParams(location.search);
   let page = searchQuary.get("page");
+  page = page ? page : 1;
   let nagivate = useNavigate();
 
   const [links, setLinks] = useState(null);
@@ -26,7 +27,6 @@ function Home() {
 
         setLinks(data.links);
         setRecipes(data.data);
-        console.log(data);
 
         window.scroll({ top: 0, left: 0, behavior: "smooth" });
       } else {
