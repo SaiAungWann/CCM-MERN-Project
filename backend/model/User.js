@@ -4,21 +4,26 @@ const bcrypt = require("bcrypt");
 
 const schema = mongoose.Schema;
 
-const UserSchema = new schema({
-  name: {
-    type: String,
-    required: true,
+const UserSchema = new schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      uniqued: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    uniqued: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 UserSchema.statics.register = async function (name, email, password) {
   let UserExist = await this.findOne({ email });
@@ -33,7 +38,6 @@ UserSchema.statics.register = async function (name, email, password) {
     name,
     email,
     password: hashValue,
-    timeStamp: Date.now(),
   });
   return user;
 };

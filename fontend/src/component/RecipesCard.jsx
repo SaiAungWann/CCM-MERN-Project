@@ -1,6 +1,6 @@
 import React from "react";
 import Ingredient from "./Ingredient";
-import axios from "axios";
+import axios from "../helpers/axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export default function RecipesCard({ recipe, onDelete }) {
   let id = useParams();
   let deleteRecipe = async () => {
     let res = await axios.delete(
-      "http://localhost:4000/api/recipes/" + recipe._id
+      "/recipes/" + recipe._id
     );
     if (res.status === 200) {
       onDelete(recipe._id);

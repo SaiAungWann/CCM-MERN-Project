@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Pagination from "../component/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../helpers/axios";
 
 function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -12,18 +13,19 @@ function Home() {
   let location = useLocation();
   let searchQuary = new URLSearchParams(location.search);
   let page = searchQuary.get("page");
-  page = page ? page : 1;
+  page = parseInt(page) ? parseInt(page) : 1;
   let nagivate = useNavigate();
 
   const [links, setLinks] = useState(null);
 
   useEffect(() => {
     let fetchRecipes = async () => {
-      let respond = await fetch(
-        "http://localhost:4000/api/recipes?page=" + page
+      let response = await axios(
+        "/recipes?page=" + page
       );
-      if (respond.ok) {
-        let data = await respond.json();
+      console.log(response.status);
+      if (response.status === 200) {
+        let data = response.data;
 
         setLinks(data.links);
         setRecipes(data.data);

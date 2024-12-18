@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axios from "../helpers/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUpForm() {
@@ -14,13 +14,13 @@ export default function SignUpForm() {
             e.preventDefault();
             setError(null);
             let data = { email, password };
-            let res = await axios.post('http://localhost:4000/api/users/login', data, { withCredentials: true });
+            let res = await axios.post('/users/login', data, { withCredentials: true });
             if (res.status === 200) {
                 navigate('/');
             }
         } catch (e) {
-            setError(e.response.data.error);
-            console.log(e.response.data.error);
+            setError(e.response.data.message);
+            console.log(e.response.data);
         }
     }
     return (
