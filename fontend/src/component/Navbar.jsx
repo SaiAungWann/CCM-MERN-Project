@@ -8,13 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 
-  let { userName, email } = useContext(AuthContext);
-  console.log(userName , email);
+  let { user, dispatch } = useContext(AuthContext);
+  console.log(user);
 
   let navigate = useNavigate();
       let logout = async () => {
         let res = await axios.post('/users/logout');
         if (res.status === 200) {
+            dispatch({ type: 'LOGOUT' });
             navigate('/sign-in');
         }
     }
@@ -50,21 +51,29 @@ export default function Navbar() {
               Create
             </Link>
           </li>
-          <li>
-            <Link to="/sign-in" className="hover:text-orange-600">
-              LogIn
-            </Link>
-          </li>
-          <li>
+            { !user && (
+              <>
+              <li>
+              <Link to="/sign-in" className="hover:text-orange-600">
+                LogIn
+              </Link>
+            </li>
+            <li>
+              <Link to="/sign-up" className="hover:text-orange-600">
+                SignUp
+              </Link>
+            </li>
+            </>
+            )}
+
+          { !!user && (
+            <li>
             <button onClick={logout} className="hover:text-orange-600">
               LogOut
             </button>
           </li>
-          <li>
-            <Link to="/sign-up" className="hover:text-orange-600">
-              SignUp
-            </Link>
-          </li>
+          )}
+
         </ul>
       </div>
     </nav>

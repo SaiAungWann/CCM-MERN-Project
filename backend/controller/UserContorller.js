@@ -18,6 +18,7 @@ const UserController = {
       return res.json({ user, token });
     } catch (error) {
       return res.status(400).json({ message: error.message });
+      console.log(error);
     }
   },
   register: async (req, res) => {

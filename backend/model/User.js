@@ -13,7 +13,7 @@ const UserSchema = new schema(
     email: {
       type: String,
       required: true,
-      uniqued: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -45,13 +45,14 @@ UserSchema.statics.login = async function (email, password) {
   let UserExist = await this.findOne({ email });
   if (!UserExist) {
     throw new error("User does not exist");
-  }
-  // compare User
-  let isCorrect = await bcrypt.compare(password, UserExist.password);
-  if (isCorrect) {
-    return UserExist;
   } else {
-    throw new error("Incorrect password");
+    // compare User
+    let isCorrect = await bcrypt.compare(password, UserExist.password);
+    if (isCorrect) {
+      return UserExist;
+    } else {
+      throw new error("Incorrect password");
+    }
   }
 };
 

@@ -31,7 +31,7 @@ const app = express();
 // ---------- WARNING: DO NOT USE IN PRODUCTION -----------
 app.use(
   cors({
-    origin: "http://localhost:5175",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 ); // Cross-Origin Resource Sharing (CORS)
