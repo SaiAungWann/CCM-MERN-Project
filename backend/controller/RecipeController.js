@@ -104,12 +104,25 @@ const RecipeController = {
       return res.status(404).json({ message: "Recipe Not found" });
     }
   },
-  upload: (req, res) => {
+  upload: async (req, res) => {
     try {
-      console.log(req.file);
-      return res.json({
-        message: "File uploaded successfully",
+      let id = req.params.id;
+
+      // check if recipe type is correct
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Not a valid id" });
+      }
+
+      let recipe = await Recipe.findByIdAndUpdate(id, {
+        recipePhoto: "/img/uploads/" + req.file.filename,
       });
+
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe Not found" });
+      }
+
+      return res.json(recipe);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });

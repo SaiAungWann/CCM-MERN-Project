@@ -16,6 +16,9 @@ const RecipeSchema = new schema(
       type: Array,
       required: true,
     },
+    recipePhoto: {
+      type: String,
+    },
   },
   {
     timestamps: true,
