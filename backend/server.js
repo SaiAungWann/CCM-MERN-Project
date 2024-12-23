@@ -9,6 +9,9 @@ const userRouters = require("./routes/Users");
 const cookieParser = require("cookie-parser");
 // const AuthMiddleware = require("./middleware/AuthMiddleware");
 
+const app = express();
+app.use(express.static("public"));
+
 const mongoURL =
   "mongodb+srv://aungwann:test1234@ccm-mern-cluster.4g4bx8h.mongodb.net/?retryWrites=true&w=majority&appName=CCM-MERN-Cluster";
 
@@ -24,8 +27,6 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
-
-const app = express();
 
 // Use Cors only when developing only
 // ---------- WARNING: DO NOT USE IN PRODUCTION -----------

@@ -64,7 +64,7 @@ const RecipeController = {
       return res.status(404).json({ message: "Recipe Not found" });
     }
   },
-  destory: async (req, res) => {
+  destroy: async (req, res) => {
     try {
       let id = req.params.id;
 
@@ -102,6 +102,17 @@ const RecipeController = {
       return res.json(recipe);
     } catch (error) {
       return res.status(404).json({ message: "Recipe Not found" });
+    }
+  },
+  upload: (req, res) => {
+    try {
+      console.log(req.file);
+      return res.json({
+        message: "File uploaded successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };
