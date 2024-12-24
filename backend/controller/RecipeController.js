@@ -1,5 +1,6 @@
 const Recipe = require("../model/Recipe");
 const mongoose = require("mongoose");
+const removeFile = require("../controller/helper/removeFile");
 
 const RecipeController = {
   index: async (req, res) => {
@@ -76,6 +77,9 @@ const RecipeController = {
 
       let recipe = await Recipe.findByIdAndDelete(id);
 
+      // delete image
+      await removeFile(__dirname + "/../public" + recipe.recipePhoto);
+
       if (!recipe) {
         return res.status(404).json({ message: "Recipe Not found" });
       }
@@ -95,6 +99,8 @@ const RecipeController = {
       }
 
       let recipe = await Recipe.findByIdAndUpdate(id, { ...req.body });
+
+      await removeFile(__dirname + "/../public" + recipe.recipePhoto);
 
       if (!recipe) {
         return res.status(404).json({ message: "Recipe Not found" });
@@ -124,7 +130,6 @@ const RecipeController = {
 
       return res.json(recipe);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   },

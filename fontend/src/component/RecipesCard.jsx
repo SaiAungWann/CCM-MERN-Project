@@ -8,7 +8,7 @@ export default function RecipesCard({ recipe, onDelete }) {
   let id = useParams();
   let deleteRecipe = async () => {
     let res = await axios.delete(
-      "/recipes/" + recipe._id
+      "/api/recipes/" + recipe._id
     );
     if (res.status === 200) {
       onDelete(recipe._id);
@@ -22,7 +22,7 @@ export default function RecipesCard({ recipe, onDelete }) {
         <div className="flex justify-center space-x-3">
           <Link
             className="text-white text-center bg-slate-500 rounded-lg h-7 w-20"
-            to={`/recipes/edit/${recipe._id}`}
+            to={`/api/recipes/edit/${recipe._id}`}
           >
             Edit
           </Link>

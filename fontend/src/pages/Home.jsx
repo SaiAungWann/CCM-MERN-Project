@@ -21,7 +21,7 @@ function Home() {
   useEffect(() => {
     let fetchRecipes = async () => {
       let response = await axios(
-        "/recipes?page=" + page
+        "/api/recipes?page=" + page
       );
       console.log(response.status);
       if (response.status === 200) {

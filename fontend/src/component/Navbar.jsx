@@ -13,7 +13,7 @@ export default function Navbar() {
 
   let navigate = useNavigate();
       let logout = async () => {
-        let res = await axios.post('/users/logout');
+        let res = await axios.post('/api/users/logout');
         if (res.status === 200) {
             dispatch({ type: 'LOGOUT' });
             navigate('/sign-in');
@@ -47,7 +47,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/recipes/create" className="hover:text-orange-600">
+            <Link to="/api/recipes/create" className="hover:text-orange-600">
               Create
             </Link>
           </li>

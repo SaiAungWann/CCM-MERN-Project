@@ -34,11 +34,11 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "/recipes/create",
+        path: "/api/recipes/create",
         element: user ? <RecipeForm /> : <Navigate to="/sign-in" />,
       },
       {
-        path: "/recipes/edit/:id",
+        path: "/api/recipes/edit/:id",
         element: <RecipeForm />,
       },
       {

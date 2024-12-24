@@ -22,9 +22,10 @@ export default function RecipeForm() {
     let fetchRecipe = async () => {
       console.log(id);
       if (id) {
-        let res = await axios.get("/recipes/" + id);
+        let res = await axios.get("/api/recipes/" + id);
         if (res.status === 200) {
           console.log(res.data);
+          setPreview(import.meta.env.VITE_BACKEND_URL + res.data.recipePhoto);
           setTitle(res.data.title);
           setDescription(res.data.description);
           setIngredients(res.data.ingredients);
@@ -53,18 +54,18 @@ export default function RecipeForm() {
       let res;
       if (id) {
         res = await axios.patch(
-          "/recipes/" + id,
+          "/api/recipes/" + id,
           recipe
         );
       } else {
-        res = await axios.post("/recipes", recipe);
+        res = await axios.post("/api/recipes", recipe);
       }
 
       // upload image
       let formData = new FormData();
       formData.set('recipePhoto', file);
       console.log(res.data)
-      let uploadRes = await axios.post(`/recipes/${res.data._id}/upload`, formData, 
+      let uploadRes = await axios.post(`/api/recipes/${res.data._id}/upload`, formData, 
         {headers: {'Accept': 'multipart/form-data'}});
       if (res.status === 200) {
         navigate("/");
@@ -95,7 +96,7 @@ export default function RecipeForm() {
       </h1>
       <form action="" className="space-y-3" onSubmit={submit}>
         <input type="file" onChange={upload}/>
-        {preview && <img src={preview} alt="" className="w-40 h-40" />}
+        {preview && <img src={preview} alt="" />}
         <input
           type="text"
           placeholder="Please enter recipe title"

@@ -17,7 +17,7 @@ export default function SignUpForm() {
             e.preventDefault();
             setError(null);
             let data = {name, email, password};
-            let res = await axios.post('/users/register', data , {withCredentials: true});
+            let res = await axios.post('/api/users/register', data , {withCredentials: true});
             if (res.status === 200) {
                 navigate('/');
             }
