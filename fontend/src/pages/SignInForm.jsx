@@ -26,7 +26,7 @@ export default function SignUpForm() {
                 console.log(res.data.user);
             }
         } catch (e) {
-            setError(e.response.data.message);
+            // setError(e.response.data.message);
             console.log(e.response);
         }
     }

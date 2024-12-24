@@ -3,6 +3,9 @@ const User = require("../model/User");
 const createToken = require("./helper/createToken");
 
 const UserController = {
+  me: async (req, res) => {
+    return res.json(req.user);
+  },
   login: async (req, res) => {
     try {
       let { email, password } = req.body;
