@@ -12,6 +12,8 @@ export default function RecipeForm() {
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [newIngredient, setNewIngredient] = useState("");
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
   const [error, setError] = useState([]);
 
@@ -55,24 +57,45 @@ export default function RecipeForm() {
           recipe
         );
       } else {
-        res = await axios.post("/api/recipes", recipe);
+        res = await axios.post("/recipes", recipe);
       }
+
+      // upload image
+      let formData = new FormData();
+      formData.set('recipePhoto', file);
+      console.log(res.data)
+      let uploadRes = await axios.post(`/recipes/${res.data._id}/upload`, formData, 
+        {headers: {'Accept': 'multipart/form-data'}});
       if (res.status === 200) {
         navigate("/");
       }
       console.log(res);
     } catch (e) {
-      setError(Object.keys(e.response.data.error));
-      // console.log(Object.keys(e.response.data.error));
+      console.log(e);
+      // setError(Object.keys(e.response.data.error));
+
     }
   };
 
+  let upload = (e) => {
+    //set file
+    let file = e.target.files[0];
+    setFile(file);
+    // preview
+    let fileReader = new FileReader();
+    fileReader.onloadend = (e) => {
+      setPreview(e.target.result);
+    };
+    fileReader.readAsDataURL(file);
+  };
   return (
     <div className="p-5 border-4 border-white rounded-2xl mt-5 space-y-6">
       <h1 className="text-3xl font-bold text-orange-400 text-center">
         Recipe {id ? "Edit" : "Create"} Form
       </h1>
       <form action="" className="space-y-3" onSubmit={submit}>
+        <input type="file" onChange={upload}/>
+        {preview && <img src={preview} alt="" className="w-40 h-40" />}
         <input
           type="text"
           placeholder="Please enter recipe title"
