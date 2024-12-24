@@ -47,14 +47,17 @@ function Home() {
     }
   };
   return (
-    <div className="p-5">
+    <>
+        <div className="p-5 grid grid-cols-3 space-x-2 ">
       {!!recipes.length &&
         recipes.map((recipe) => (
           <RecipesCard recipe={recipe} key={recipe._id} onDelete={onDelete} />
         ))}
 
-      {!!links && <Pagination links={links} page={page || 1} />}
     </div>
+      {!!links && <Pagination links={links} page={page || 1} />}
+    </>
+
   );
 }
 

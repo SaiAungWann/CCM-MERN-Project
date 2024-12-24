@@ -14,9 +14,11 @@ export default function RecipesCard({ recipe, onDelete }) {
       onDelete(recipe._id);
     }
   };
+  console.log(recipe.recipePhoto);
 
   return (
-    <div className="p-5 bg-white rounded-2xl mt-5 space-y-5">
+    <div className="p-5 bg-white rounded-2xl space-y-5">
+      <img className='mx-auto h-64 object-contain' src={import.meta.env.VITE_BACKEND_URL + recipe.recipePhoto} alt="" />
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold text-orange-600">{recipe.title}</h1>
         <div className="flex justify-center space-x-3">
@@ -36,10 +38,7 @@ export default function RecipesCard({ recipe, onDelete }) {
       </div>
       <p>{recipe.description}</p>
       <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi rem
-        debitis repellat hic id ipsa vel aliquam, facere repudiandae voluptatum
-        ab ullam harum? Officiis, pariatur? Vitae quasi dignissimos omnis
-        perferendis.
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
       </p>
 
       <Ingredient ingredients={recipe.ingredients} />
