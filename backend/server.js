@@ -10,6 +10,8 @@ const cookieParser = require("cookie-parser");
 // const AuthMiddleware = require("./middleware/AuthMiddleware");
 const corn = require("node-cron");
 const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const sendEmail = require("./controller/helper/sendEmail");
 
 const app = express();
 app.use(express.static("public"));
@@ -61,6 +63,8 @@ app.use(cookieParser());
 app.use("/api/recipes", recipeRouters);
 
 app.use("/api/users", userRouters);
+app.set("views", "./views");
+app.set("view engine", "ejs");
 
 app.get("/set-cookie", (req, res) => {
   res.setHeader("Set-Cookie", "name=saiaungwann");
@@ -75,24 +79,13 @@ app.get("/get-cookie", (req, res) => {
 });
 
 app.get("/send-email", async (req, res) => {
-  // Looking to send emails in production? Check out our Email API/SMTP product!
-  var transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-      user: "392eed1fffc310",
-      pass: "b1d8426d882a8c",
-    },
+  sendEmail({
+    viewFileName: "email",
+    data: { name: "Mg Mg" },
+    form: "aungwann@gmail.com",
+    to: "mgmg@gmail.com",
+    subject: "Attention",
   });
-
-  const info = await transport.sendMail({
-    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-    to: "bar@example.com, baz@example.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    html: "<b>Hello world?</b>", // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
   // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email
   // main().catch(console.error);s
   return res.json({ message: "Email sent" });
