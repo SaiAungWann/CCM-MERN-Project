@@ -9,6 +9,7 @@ const userRouters = require("./routes/Users");
 const cookieParser = require("cookie-parser");
 // const AuthMiddleware = require("./middleware/AuthMiddleware");
 const corn = require("node-cron");
+const nodemailer = require("nodemailer");
 
 const app = express();
 app.use(express.static("public"));
@@ -71,4 +72,28 @@ app.get("/set-cookie", (req, res) => {
 app.get("/get-cookie", (req, res) => {
   let cookies = req.cookies;
   return res.json(cookies);
+});
+
+app.get("/send-email", async (req, res) => {
+  // Looking to send emails in production? Check out our Email API/SMTP product!
+  var transport = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "392eed1fffc310",
+      pass: "b1d8426d882a8c",
+    },
+  });
+
+  const info = await transport.sendMail({
+    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+    to: "bar@example.com, baz@example.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email
+  // main().catch(console.error);s
+  return res.json({ message: "Email sent" });
 });
