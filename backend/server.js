@@ -8,6 +8,7 @@ const cors = require("cors");
 const userRouters = require("./routes/Users");
 const cookieParser = require("cookie-parser");
 // const AuthMiddleware = require("./middleware/AuthMiddleware");
+const corn = require("node-cron");
 
 const app = express();
 app.use(express.static("public"));
@@ -22,6 +23,14 @@ mongoose
 
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT}`);
+
+      // schedule for every 5 minutes
+      //   corn.schedule("*/5 * * * *", async () => {
+      //     console.log("running a task every 5 minutes");
+      //     let user = await User.findByIdAndUpdate(
+      //       "61f3c7c7d9c9d4d4c4c4c4c4",
+      //     {  name : "saiaungwann " + Date.now()}
+      //     )
     });
   })
   .catch((error) => {
