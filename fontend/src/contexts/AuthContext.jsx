@@ -8,9 +8,6 @@ let AuthReducer = (state, action) => {
         case "LOGIN":
          
             localStorage.setItem("user", JSON.stringify(action.payload));
-
-
-
             return { user: action.payload };
         case "LOGOUT":
             localStorage.removeItem("user");

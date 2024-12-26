@@ -12,6 +12,7 @@ const corn = require("node-cron");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const sendEmail = require("./controller/helper/sendEmail");
+const AuthMiddleware = require("./middleware/AuthMiddleware");
 
 const app = express();
 app.use(express.static("public"));
@@ -60,7 +61,7 @@ console.log(process.env.PORT);
 
 app.use(cookieParser());
 
-app.use("/api/recipes", recipeRouters);
+app.use("/api/recipes", AuthMiddleware, recipeRouters);
 
 app.use("/api/users", userRouters);
 app.set("views", "./views");
@@ -79,14 +80,21 @@ app.get("/get-cookie", (req, res) => {
 });
 
 app.get("/send-email", async (req, res) => {
-  sendEmail({
-    viewFileName: "email",
-    data: { name: "Mg Mg" },
-    form: "aungwann@gmail.com",
-    to: "mgmg@gmail.com",
-    subject: "Attention",
-  });
-  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email
-  // main().catch(console.error);s
-  return res.json({ message: "Email sent" });
+  try {
+    sendEmail({
+      viewFileName: "email",
+      data: { name: "Mg Mg" },
+      form: "aungwann@gmail.com",
+      to: "mgmg@gmail.com",
+      subject: "Attention",
+    });
+    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email
+    // main().catch(console.error);s
+    return res.json({ message: "Email sent" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
+  }
 });

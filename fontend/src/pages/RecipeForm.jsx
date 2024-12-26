@@ -70,7 +70,7 @@ export default function RecipeForm() {
       if (res.status === 200) {
         navigate("/");
       }
-      console.log(res);
+      console.log(uploadRes);
     } catch (e) {
       console.log(e);
       // setError(Object.keys(e.response.data.error));
