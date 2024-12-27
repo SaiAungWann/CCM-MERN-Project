@@ -5,11 +5,11 @@ const sendEmail = async ({ viewFileName, data, from, to, subject }) => {
   // Looking to send emails in production? Check out our Email API/SMTP product!
   try {
     var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       auth: {
-        user: "392eed1fffc310",
-        pass: "b1d8426d882a8c",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
