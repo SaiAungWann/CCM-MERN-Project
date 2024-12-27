@@ -2,7 +2,7 @@ const Recipe = require("../model/Recipe");
 const mongoose = require("mongoose");
 const removeFile = require("../controller/helper/removeFile");
 const User = require("../model/User");
-const sendEmail = require("../controller/helper/sendEmail");
+const emailQueue = require("../queues/emailQueue");
 
 const RecipeController = {
   index: async (req, res) => {
@@ -51,11 +51,9 @@ const RecipeController = {
       let users = await User.find(null, ["email"]);
       let emails = users.map((user) => user.email);
       emails.filter((email) => email != req.user.email);
-      console.log(req.user.name);
-      console.log(recipe);
-
       // send email when created new recipe
-      await sendEmail({
+
+      emailQueue.add({
         viewFileName: "email",
         data: {
           name: req.user.name,
